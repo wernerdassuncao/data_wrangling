@@ -27,6 +27,33 @@ dat1=read.csv(file.path(path, filename1))
 dat2=read.csv(file.path(path, filename2))
 
 
+#Examples of copying file to a directory:
+# getwd()
+# [1] "C:/Users/UNIVERSITY/Documents/Analyses/HarvardX-Wrangling"
+# filename <- "murders.csv"
+# path <- system.file("extdata", package = "dslabs")
+
+# 1:
+setwd("data")
+file.copy(file.path(path, filename), getwd())
+
+# 2
+file.copy(file.path(path, "murders.csv"), file.path(getwd(), "data"))
+
+
+# 3
+file.location <- file.path(system.file("extdata", package = "dslabs"), "murders.csv")
+file.destination <- file.path(getwd(), "data")
+file.copy(file.location, file.destination)
+
+
+
+#creating a directory 
+dir.create("werner")
+new_path <- file.path(getwd(), "werner")
+
+new_path
+
 
 
 # FUNCTION  FORMAT      TYPICAL SUFFIX

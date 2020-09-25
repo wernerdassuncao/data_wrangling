@@ -4,6 +4,18 @@ path <- system.file("extdata", package="dslabs")
 filename <- file.path(path, "fertility-two-countries-example.csv")
 wide_data <- read_csv(filename)
 
+# Wide format:
+#1. Each row includes several observations
+#2. One of the variables is stored in the header
+
+#GATHER function:
+# 1st argument sets the column name that will hold the variable that is currently
+# kept in the wide data column name;
+# 2nd argument sets the column name for the column that will hold 
+#the value on the column cells.
+
+
+
 new_tidy_data <- gather(wide_data, year, fertility, '1960':'2015')
 new_tidy_data
 
