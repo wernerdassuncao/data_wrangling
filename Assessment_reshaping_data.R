@@ -104,7 +104,7 @@ average <- tidy_co2 %>%
   mutate(year_avg = mean(co2)) %>%
   ungroup()
 #plotting the line
-average %>% ggplot(aes(as.numeric(year), year_avg)) + geom_line()
+#average %>% ggplot(aes(as.numeric(year), year_avg)) + geom_line()
 
 
 
