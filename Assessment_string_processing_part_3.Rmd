@@ -1,0 +1,209 @@
+---
+title: "Assessment_part1_string_processing_part_3"
+author: "Werner Dassuncao"
+date: "10/24/2020"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(tidyr)
+library(dslabs)
+data("gapminder")
+```
+
+## Assessment Part 1: String Processing Part 3
+
+In this part of the assessment, you will answer several multiple choice questions that review the concepts of string processing. You can answer these questions without using R, although you may find it helpful to experiment with commands in your console.
+
+In the second part of the assessment on the next page, you will import a real dataset and use string processing to clean it for analysis. This will require you to write code in R.
+
+Want even more practice with regular expressions? Complete the lessons and exercises in the RegexOne External link online interactive tutorial!
+
+Question 2
+1 point possible (graded)
+You have the following table, schedule:
+
+>schedule
+day		staff
+Monday		Mandy, Chris and Laura
+Tuesday		Steve, Ruth and Frank
+
+You want to turn this into a more useful data frame.
+
+Which two commands would properly split the text in the “staff” column into each individual name? Select ALL that apply.
+
+```{r}
+schedule <- read_tsv('schedule.csv')
+
+schedule
+```
+
+&nbsp;
+
+WRONG OPTION
+```{r}
+str_split(schedule$staff, ",|and")
+```
+
+&nbsp;
+
+CORRECT OPTION
+```{r}
+str_split(schedule$staff, ",| and ")
+```
+
+&nbsp;
+
+CORRECT OPTION
+```{r}
+
+str_split(schedule$staff, ",\\s|\\sand\\s?")
+```
+
+&nbsp;
+
+WRONG OPTION
+
+```{r}
+str_split(schedule$staff, "\\s?(,|and)\\s?")
+```
+
+&nbsp;
+
+Question 3
+
+You have the following table, schedule:
+
+> schedule
+day         staff
+Monday   	Mandy, Chris and Laura
+Tuesday 	Steve, Ruth and Frank
+
+What code would successfully turn your “Schedule” table into the following tidy table?
+
+> tidy
+day     staff
+<chr>   <chr>
+Monday  Mandy
+Monday  Chris
+Monday  Laura
+Tuesday Steve
+Tuesday Ruth 
+Tuesday Frank
+
+
+```{r}
+tidy <- schedule %>% 
+  mutate(staff = str_split(staff, ",\\s|\\sand\\s?")) %>% 
+  unnest()
+
+tidy
+```   
+
+&nbsp;
+
+Error during parsing: 
+# ```{r}
+# tidy <- separate(schedule, staff, into = c("s1","s2","s3"), sep = "([?])") %>%
+#   gather(key = s, value = staff, s1:s3)
+# 
+# tidy
+# ```
+
+&nbsp;
+
+```{r}
+tidy <- schedule %>% 
+  mutate(staff = str_split(staff, ", | and ", simplify = TRUE)) %>% 
+  unnest()
+tidy
+```
+
+
+&nbsp;
+&nbsp;
+
+Question 4
+
+Using the gapminder data, you want to recode countries longer than 12 letters in the region “Middle Africa” to their abbreviations in a new column, “country_short”. Which code would accomplish this?
+
+Locating the countries with names larger than 12 letters:
+```{r}
+long_names <- gapminder %>% 
+  filter(region == 'Middle Africa' & nchar(as.character(country)) > 12)
+head(long_names)
+```
+
+&nbsp;
+
+WRONG ANSWER (created a new column "recode(...)" not country_short)
+```{r}
+dat <- gapminder %>% filter(region == "Middle Africa") %>% 
+  mutate(recode(country, 
+                "Central African Republic" = "CAR", 
+                "Congo, Dem. Rep." = "DRC",
+                "Equatorial Guinea" = "Eq. Guinea"))
+head(dat, 20)
+```
+
+&nbsp;
+
+WRONG ANSWER (not enough arguments, run error, commented out)
+#```{r}
+#dat <- gapminder %>% filter(region == "Middle Africa") %>% 
+#  mutate(country_short = recode(country, 
+#                                c("Central African Republic", "Congo, Dem. Rep.", "Equatorial Guinea"),
+#                                c("CAR", "DRC", "Eq. Guinea")))
+#```        
+
+&nbsp;
+WRONG ANSWER(recoded the actual names on the country column, we want a new column called 'country_short')
+```{r}
+dat <- gapminder %>% filter(region == "Middle Africa") %>% 
+  mutate(country = recode(country, 
+                          "Central African Republic" = "CAR", 
+                          "Congo, Dem. Rep." = "DRC",
+                          "Equatorial Guinea" = "Eq. Guinea"))
+head(dat, 20)
+```        
+
+&nbsp;
+CORRECT ANSWER(adds a new column at the end "country_short")
+```{r}
+dat <- gapminder %>% filter(region == "Middle Africa") %>% 
+  mutate(country_short = recode(country, 
+                                "Central African Republic" = "CAR", 
+                                "Congo, Dem. Rep." = "DRC",
+                                "Equatorial Guinea" = "Eq. Guinea"))
+head(dat, 20)
+```
+
+## Including Plots
+
+Drawing a plot of Life Expectancy versus Infant Mortality in Middle Africa we can make the following observations: 
+1. the higher the infant mortality, the lower the life expectancy
+2. the higher the life expectancy, the lower infant mortality
+
+These two variables seem to have a inverse or negative correlation.
+
+```{r Middle Africa, echo=TRUE}
+dat %>%
+  ggplot(aes(life_expectancy, infant_mortality, color = country_short)) +
+  geom_line() +
+  labs(x = 'Life expectancy', y = 'Infant mortality', label = 'Country', title = "Middle Africa")
+```
+
+&nbsp;
+
+As a comparison we can generate a similar plot for western european countries:
+
+```{r Western Europe, echo=TRUE}
+gapminder %>% filter(region == 'Western Europe') %>%
+  ggplot(aes(life_expectancy, infant_mortality, color = country)) +
+  geom_line() +
+  labs(x = 'Life expectancy', y = 'Infant mortality', label = 'Country', title = "Western Europe")
+```
+
+Interesting to observe a similar behavior of the variables in Middle Africa and Western Europe. It is worth noting that the nature of the relationship seems more "curved" in Europe than what we observe in Africa.
