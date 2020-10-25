@@ -19,4 +19,6 @@ tab %>% extract(x, c("feet", "inches"), regex = "(\\d)'(\\d{1,2})")
 class(tab)
 
 class(x)
+x
+s
 

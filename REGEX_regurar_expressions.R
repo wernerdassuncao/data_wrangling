@@ -58,12 +58,17 @@ problems[ind] %>% head(n=10) %>% cat
 # load stringr through tidyverse
 library(tidyverse)
 
+
 # detect whether a comma is present
 pattern <- ","
-str_detect(murders_raw$total, pattern) 
+height_with_comma <- str_detect(reported_heights$height, pattern) 
+sum(height_with_comma)
+str_subset(reported_heights$height, ",")
+
 
 # show the subset of strings including "cm"
 str_subset(reported_heights$height, "cm")
+
 
 # use the "or" symbol inside a regex (|)
 yes <- c("180 cm", "70 inches")

@@ -2,9 +2,7 @@
 title: "Report on Life Expectancy in the Caribbean"
 author: "Werner Dassuncao"
 date: "`r format(Sys.Date())`"
-output:
-  github_document: default
-  pdf_document: default
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
