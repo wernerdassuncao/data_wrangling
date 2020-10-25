@@ -1,0 +1,92 @@
+---
+title: "Report on Life Expectancy in the Caribbean"
+author: "Werner Dassuncao"
+date: "`r format(Sys.Date())`"
+output:
+  github_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE)
+```
+
+## Introduction
+
+As practice string exercise I will apply recoding of names of categorical variables.
+
+The original data is available from the 'dslabs' package on CRAN. The name of the dataset is 'gapminder'.
+
+The objective is to replace(recode) the long names for the levels and to be displayed in plots, by using the 'recode' function available.
+
+For example, in character vectors with country names, you might want to change “United States of America” to “USA” and “United Kingdom” to UK, and so on.
+
+We can do this with case_when, although the tidyverse offers an option that is
+specifically designed for this task: the **recode** function.
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+We will use the gapminder dataset available in the dslabs library:
+
+```{r loading-libs, message=FALSE}
+library(tidyverse)
+library(dslabs)
+```
+
+<p>&nbsp;</p>
+
+Loading the gapminder dataset:
+
+```{r}
+data("gapminder")
+```
+
+<p>&nbsp;</p>
+
+These are the column names:
+
+```{r}
+colnames(gapminder)
+```
+
+
+<p>&nbsp;</p>
+
+Bellow we can see the countries in the Caribbean and their earliest life expectancy and year:
+
+```{r}
+gapminder %>% filter(region == 'Caribbean' & year == min(year)) %>%
+  summarize(country, year, life_expectancy)
+```
+
+
+<p>&nbsp;</p>
+
+Filtering the data to grab the Caribbean region, and generating a plot with colored lines for each country:
+
+```{r}
+gapminder %>%
+  filter(region == 'Caribbean') %>%
+  ggplot(aes(year, life_expectancy, color = country)) +
+  ggtitle('Plot with the full country names.\nNote how much space the names take, we want the plot to be highlighted.') +
+  labs(x ='Year', y ='Life expectancy', color ='Original Country names') +
+  geom_line()
+```
+
+<p>&nbsp;</p>
+
+Now we will recode with shorter versions of the longer country names:
+
+```{r}
+gapminder %>% filter(region=='Caribbean') %>%
+  mutate(country=recode(country,
+                        'Antigua and Barbuda' = 'Barbuda',
+                        'Dominican Republic' = 'DR',
+                        'St. Vincent and the Grenadines' = 'St. Vincent',
+                        'Trinidad and Tobago' = 'Trinidad')) %>%
+  ggplot(aes(year, life_expectancy,color=country)) +
+  ggtitle('Plot with recoded country names,\nNow we can see more of the plot!') +
+  labs(x ='Year', y ='Life expectancy', color ='Country') +
+  geom_line()
+```
