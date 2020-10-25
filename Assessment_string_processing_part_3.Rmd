@@ -21,7 +21,7 @@ In the second part of the assessment on the next page, you will import a real da
 
 Want even more practice with regular expressions? Complete the lessons and exercises in the RegexOne External link online interactive tutorial!
 
-Question 2
+## Question 2
 
 You have the following table, schedule:
 
@@ -72,7 +72,7 @@ str_split(schedule$staff, "\\s?(,|and)\\s?")
 
 &nbsp;
 
-Question 3
+## Question 3
 
 You have the following table, schedule:
 
@@ -127,7 +127,7 @@ tidy
 &nbsp;
 &nbsp;
 
-Question 4
+## Question 4
 
 Using the gapminder data, you want to recode countries longer than 12 letters in the region “Middle Africa” to their abbreviations in a new column, “country_short”. Which code would accomplish this?
 
@@ -184,7 +184,7 @@ head(dat)
 
 ## Including Plots
 
-Drawing a plot of Life Expectancy versus Infant Mortality in Middle Africa we can make the following observations: 
+### Drawing a plot of Life Expectancy versus Infant Mortality in Middle Africa we can make the following observations: 
 1. the higher the infant mortality, the lower the life expectancy
 2. the higher the life expectancy, the lower infant mortality
 
@@ -199,7 +199,7 @@ dat %>%
 
 &nbsp;
 
-As a comparison we can generate a similar plot for western european countries:
+### As a comparison we can generate a similar plot for western european countries:
 
 ```{r Western Europe, echo=TRUE}
 gapminder %>% filter(region == 'Western Europe') %>%
@@ -208,4 +208,5 @@ gapminder %>% filter(region == 'Western Europe') %>%
   labs(x = 'Life expectancy', y = 'Infant mortality', color = 'Country', title = "Western Europe")
 ```
 
-Interesting to observe a similar behavior of the variables in Middle Africa and Western Europe. It is worth noting that the nature of the relationship seems more "curved" in Europe than what we observe in Africa.
+## Final note:
+  Interesting to observe a similar behavior of the variables in Middle Africa and Western Europe. It is worth noting that the nature of the relationship seems more "**curved**" in Europe than what we observe in Africa.

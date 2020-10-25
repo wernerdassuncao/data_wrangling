@@ -18,7 +18,7 @@ Want even more practice with regular expressions? Complete the lessons
 and exercises in the RegexOne External link online interactive
 tutorial\!
 
-Question 2
+## Question 2
 
 You have the following table, schedule:
 
@@ -108,7 +108,7 @@ str_split(schedule$staff, "\\s?(,|and)\\s?")
 
  
 
-Question 3
+## Question 3
 
 You have the following table, schedule:
 
@@ -182,7 +182,7 @@ tidy
 
    
 
-Question 4
+## Question 4
 
 Using the gapminder data, you want to recode countries longer than 12
 letters in the region “Middle Africa” to their abbreviations in a new
@@ -305,10 +305,10 @@ head(dat)
 
 ## Including Plots
 
-Drawing a plot of Life Expectancy versus Infant Mortality in Middle
-Africa we can make the following observations: 1. the higher the infant
-mortality, the lower the life expectancy 2. the higher the life
-expectancy, the lower infant mortality
+### Drawing a plot of Life Expectancy versus Infant Mortality in Middle Africa we can make the following observations:
+
+1.  the higher the infant mortality, the lower the life expectancy
+2.  the higher the life expectancy, the lower infant mortality
 
 These two variables seem to have a inverse or negative correlation.
 
@@ -325,8 +325,7 @@ dat %>%
 
  
 
-As a comparison we can generate a similar plot for western european
-countries:
+### As a comparison we can generate a similar plot for western european countries:
 
 ``` r
 gapminder %>% filter(region == 'Western Europe') %>%
@@ -339,7 +338,9 @@ gapminder %>% filter(region == 'Western Europe') %>%
 
 ![](Assessment_string_processing_part_3_files/figure-gfm/Western%20Europe-1.png)<!-- -->
 
+## Final note:
+
 Interesting to observe a similar behavior of the variables in Middle
 Africa and Western Europe. It is worth noting that the nature of the
-relationship seems more “curved” in Europe than what we observe in
+relationship seems more “**curved**” in Europe than what we observe in
 Africa.
