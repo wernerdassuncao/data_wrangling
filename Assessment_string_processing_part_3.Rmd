@@ -22,7 +22,7 @@ In the second part of the assessment on the next page, you will import a real da
 Want even more practice with regular expressions? Complete the lessons and exercises in the RegexOne External link online interactive tutorial!
 
 Question 2
-1 point possible (graded)
+
 You have the following table, schedule:
 
 >schedule
@@ -84,16 +84,16 @@ Tuesday 	Steve, Ruth and Frank
 What code would successfully turn your “Schedule” table into the following tidy table?
 
 > tidy
-day     staff
-<chr>   <chr>
-Monday  Mandy
-Monday  Chris
-Monday  Laura
-Tuesday Steve
-Tuesday Ruth 
-Tuesday Frank
+day     staff\n
+<chr>   <chr>\n
+Monday  Mandy\n
+Monday  Chris\n
+Monday  Laura\n
+Tuesday Steve\n
+Tuesday Ruth\n 
+Tuesday Frank\n
 
-
+CORRECT ANSWER:
 ```{r}
 tidy <- schedule %>% 
   mutate(staff = str_split(staff, ",\\s|\\sand\\s?")) %>% 
@@ -104,15 +104,18 @@ tidy
 
 &nbsp;
 
-Error during parsing: 
-# ```{r}
+Error during parsing: (code commented out)
+
+```{r}
 # tidy <- separate(schedule, staff, into = c("s1","s2","s3"), sep = "([?])") %>%
 #   gather(key = s, value = staff, s1:s3)
 # 
 # tidy
-# ```
+```
 
 &nbsp;
+
+WRONG ANSWER:
 
 ```{r}
 tidy <- schedule %>% 
@@ -120,7 +123,6 @@ tidy <- schedule %>%
   unnest()
 tidy
 ```
-
 
 &nbsp;
 &nbsp;
@@ -145,18 +147,18 @@ dat <- gapminder %>% filter(region == "Middle Africa") %>%
                 "Central African Republic" = "CAR", 
                 "Congo, Dem. Rep." = "DRC",
                 "Equatorial Guinea" = "Eq. Guinea"))
-head(dat, 20)
+head(dat)
 ```
 
 &nbsp;
 
 WRONG ANSWER (not enough arguments, run error, commented out)
-#```{r}
+```{r}
 #dat <- gapminder %>% filter(region == "Middle Africa") %>% 
 #  mutate(country_short = recode(country, 
 #                                c("Central African Republic", "Congo, Dem. Rep.", "Equatorial Guinea"),
 #                                c("CAR", "DRC", "Eq. Guinea")))
-#```        
+```        
 
 &nbsp;
 WRONG ANSWER(recoded the actual names on the country column, we want a new column called 'country_short')
@@ -166,7 +168,7 @@ dat <- gapminder %>% filter(region == "Middle Africa") %>%
                           "Central African Republic" = "CAR", 
                           "Congo, Dem. Rep." = "DRC",
                           "Equatorial Guinea" = "Eq. Guinea"))
-head(dat, 20)
+head(dat)
 ```        
 
 &nbsp;
@@ -177,7 +179,7 @@ dat <- gapminder %>% filter(region == "Middle Africa") %>%
                                 "Central African Republic" = "CAR", 
                                 "Congo, Dem. Rep." = "DRC",
                                 "Equatorial Guinea" = "Eq. Guinea"))
-head(dat, 20)
+head(dat)
 ```
 
 ## Including Plots
@@ -192,7 +194,7 @@ These two variables seem to have a inverse or negative correlation.
 dat %>%
   ggplot(aes(life_expectancy, infant_mortality, color = country_short)) +
   geom_line() +
-  labs(x = 'Life expectancy', y = 'Infant mortality', label = 'Country', title = "Middle Africa")
+  labs(x = 'Life expectancy', y = 'Infant mortality', color = 'Country', title = "Middle Africa")
 ```
 
 &nbsp;
@@ -203,7 +205,7 @@ As a comparison we can generate a similar plot for western european countries:
 gapminder %>% filter(region == 'Western Europe') %>%
   ggplot(aes(life_expectancy, infant_mortality, color = country)) +
   geom_line() +
-  labs(x = 'Life expectancy', y = 'Infant mortality', label = 'Country', title = "Western Europe")
+  labs(x = 'Life expectancy', y = 'Infant mortality', color = 'Country', title = "Western Europe")
 ```
 
 Interesting to observe a similar behavior of the variables in Middle Africa and Western Europe. It is worth noting that the nature of the relationship seems more "curved" in Europe than what we observe in Africa.
