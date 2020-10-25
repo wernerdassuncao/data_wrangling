@@ -5,10 +5,10 @@ Werner Dassuncao
 
 ## Introduction
 
-As practice string exercise I will apply recoding of names of
+As practice  exercise on strings, I will apply recoding of names of
 categorical variables.
 
-The original data is available from the ‘dslabs’ package on CRAN. The
+The original data is available from the ‘dslabs’ package on https://cran.r-project.org/. The
 name of the dataset is ‘gapminder’.
 
 The objective is to replace(recode) the long names for the levels and to
