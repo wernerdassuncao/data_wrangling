@@ -52,7 +52,8 @@ head(polls)
 
 
 How many rows remain in the polls data frame?
-```{r}
+
+```{r echo=TRUE}
 nrow(polls)
 ```
 
@@ -64,20 +65,24 @@ Which of these commands converts the remain vector to a proportion between 0 and
 Check all correct answers.
 
 ```{r}
+# Incorrect
 as.numeric(str_remove(polls$remain, "%"))
 
+# Incorrect
 as.numeric(polls$remain)/100
 
+# Incorrect
 parse_number(polls$remain)
 
 #non-numeric argument to binary operator: commented out
 #str_remove(polls$remain, "%")/100
+```
 
-#Correct
+```{r}
+# Correct
 as.numeric(str_replace(polls$remain, "%", ""))/100
 
-
-#Correct
+# Correct
 parse_number(polls$remain)/100
 ```
 
@@ -95,7 +100,7 @@ What function replaces function_name?
 polls <- polls %>%
   mutate(undecided = str_replace_all(undecided, "N/A", "0"))
 
-polls
+head(polls)
 ```
   
 What argument replaces arg1?
