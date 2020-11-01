@@ -1,0 +1,63 @@
+---
+title: "Untitled"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Assessment Part 1: Dates, Times, and Text Mining
+
+
+This assessment reviews several concepts about dates, times, and text mining. In part 1 on this page, you will practice extracting and manipulating dates in real datasets. In part 2 on the next page, you will walk through a sentiment analysis of a novel using steps covered in the previous section.
+
+Use the following libraries and options for coding questions:
+
+```{r}
+library(dslabs)
+library(lubridate)
+options(digits = 3)    # 3 significant digits
+```
+IMPORTANT: Some of these exercises use dslabs datasets that were added in a July 2019 update. Make sure your package is up to date with the command install.packages("dslabs").
+
+### Question 1
+
+Which of the following is the standard ISO 8601 format for dates?
+MM-DD-YY
+YYYY-MM-DD  *****
+YYYYMMDD
+YY-MM-DD
+
+Answer:
+Correct:This is proper ISO 8601 formatting for dates.
+
+Explanation:
+YYYY-MM-DD (year, month, day) is proper ISO 8601 formatting for dates.
+
+### Question 2
+
+hich of the following commands could convert this string into the correct date format?
+
+```{r}      
+dates <- c("09-01-02", "01-12-07", "02-03-04")
+
+
+ymd(dates)
+        
+
+mdy(dates)
+        
+
+dmy(dates)
+```         
+Answer:
+It is impossible to know which format is correct without additional information. ****
+
+Explanation:
+The formatting of these dates is ambiguous. They could be formatted as ymd, mdy or dmy. We need more information about our data to be able to select the correct command.
+
+
+
+
+

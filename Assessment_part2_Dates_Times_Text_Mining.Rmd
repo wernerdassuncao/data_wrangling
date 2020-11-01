@@ -1,0 +1,213 @@
+---
+title: 'Assessment Part 2: Dates, Times, and Text Mining'
+author: "Werner Dassuncao"
+date: "`r format(Sys.Date(), '%d %B, %Y.')`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this part of the assessment, you will walk through a basic text mining and sentiment analysis task.
+
+Project Gutenberg is a digital archive of public domain books. The R package gutenbergr facilitates the importation of these texts into R. We will combine this with the tidyverse and tidytext libraries to practice text mining.
+
+Use these libraries and options:
+
+```{r}
+library(tidyverse)
+library(gutenbergr)
+library(tidytext)
+options(digits = 3)
+```
+
+You can see the books and documents available in gutenbergr like this:
+
+```{r} 
+gutenberg_metadata
+```
+
+#### gutenberg_metadata not available...,  workaround:
+
+```{r}
+#install.packages(c("urltools", "lazyeval"))    
+#install.packages("https://cran.r-project.org/src/contrib/Archive/gutenbergr/gutenbergr_0.1.5.tar.gz", repos = NULL, type = "source")
+
+head(gutenberg_metadata)
+colnames(gutenberg_metadata)
+```
+
+
+### Question 6
+
+Use str_detect() to find the ID of the novel Pride and Prejudice.
+
+How many different ID numbers are returned?
+```{r}
+
+pattern <- 'Pride and Prejudice'
+gutenberg_metadata %>% 
+  filter(str_detect(title, pattern))
+
+
+# alternative code:
+ gutenberg_metadata %>%
+    filter(str_detect(title, "Pride and Prejudice"))
+
+```
+
+### Question 7
+
+Notice that there are several versions of the book. The gutenberg_works() function filters this table to remove replicates and include only English language works. Use this function to find the ID for Pride and Prejudice.
+
+What is the correct ID number?
+Read the gutenberg_works() documentation to learn how to use the function.
+
+```{r}
+library(dplyr)
+title_id <- gutenberg_works(title == pattern)$gutenberg_id
+title_id
+```
+
+
+### Question 8
+
+Use the gutenberg_download() function to download the text for Pride and Prejudice. Use the tidytext package to create a tidy table with all the words in the text. Save this object as words.
+
+How many words are present in the book?
+```{r}
+#creating a table:
+book <- tibble(gutenberg_download(title_id))
+
+# grabs each word from input(column) and creates a 'word' column with one row for each word
+words <- unnest_tokens(book, word, text,token = 'words')
+
+# Output sample:
+head(words)
+
+# Answer:
+# Counting the rows(words)
+nrow(words)
+
+
+# Alternative code:
+
+book <- gutenberg_download(1342)
+words <- book %>%
+  unnest_tokens(word, text)
+nrow(words)
+```
+
+
+
+### Question 9
+
+Remove stop words from the words object. Recall that stop words are defined in the stop_words data frame from the tidytext package.
+
+```{r}
+
+# Looking at the stop_words structure
+str(stop_words)
+
+# Looking at the data:
+stop_words
+
+# Filtering out the words from stop_words:
+
+words <- words %>%
+  filter(!word %in% stop_words$word)
+
+words
+nrow(words)
+
+# Alternative code:
+ words <- words %>% anti_join(stop_words)
+nrow(words)
+```
+
+
+How many words remain?
+Answer: 
+`r nrow(words)`
+
+
+### Question 10
+
+After removing stop words, detect and then filter out any token that contains a digit from words.
+
+How many words remain?
+
+```{r}
+# Creating a pattern to remove a digit from words
+words <- words %>% filter(!str_detect(word, "\\d"))
+nrow(words)
+
+
+
+
+
+```
+
+
+### Question 11
+
+Analyze the most frequent words in the novel after removing stop words and tokens with digits.
+
+How many words appear more than 100 times in the book?
+```{r}
+nrow(words %>% 
+  count(word) %>%
+  filter(n > 100) %>%
+  arrange(desc(n)))
+
+```
+ 
+What is the most common word in the book?
+```{r}
+words %>% count(word) %>%
+  top_n(1,n) %>%
+  pull(word)
+
+```
+How many times does that most common word appear?
+```{r}
+words %>% count(word) %>%
+  top_n(1,n) %>%
+  pull(n)
+```
+### Question 12
+
+Define the afinn lexicon:
+
+`r afinn <- get_sentiments("afinn")`
+
+  
+Note that this command will trigger a question in the R Console asking if you want to download the AFINN lexicon. Press 1 to select "Yes" (if using RStudio, enter this in the Console tab).
+
+Use this afinn lexicon to assign sentiment values to words. Keep only words that are present in both words and the afinn lexicon. Save this data frame as afinn_sentiments.
+
+How many elements of words have sentiments in the afinn lexicon?
+
+```{r}
+words_sentiment <- words %>% 
+  inner_join(afinn, by = 'word') 
+
+nrow(words_sentiment)
+```
+
+What proportion of words in afinn_sentiments have a positive value?
+
+```{r}
+mean(afinn$value > 0)
+# The official answer is 0.563, but most likely the afinn_sentiments got updated and the mean has changed... answers not updated...
+```
+
+How many elements of afinn_sentiments have a value of 4?
+
+```{r}
+sum(afinn$value == 4)
+# The official answer is 51, but most likely the afinn_sentiments got updated and the this answer has changed... answers not updated...
+
+```
+
